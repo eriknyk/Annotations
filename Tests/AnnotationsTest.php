@@ -19,16 +19,6 @@ class AnnotationsTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->annotations = new Annotations;
-
-        $annotations = new Annotations();
-
-        require_once HOME_PATH . 'Tests/Fixtures/classes/Base/Annotation/Annotation.php';
-        require_once HOME_PATH . 'Tests/Fixtures/classes/Base/Annotation/PermissionAnnotation.php';
-        require_once HOME_PATH . 'Tests/Fixtures/classes/Base/Annotation/RoleAnnotation.php';
-
-        $annotations->setDefaultAnnotationNamespace('\Base\Annotation\\');
-        $result = $annotations->getMethodAnnotationsObjects('User', 'create');
-        print_r($result);
     }
 
     /**
