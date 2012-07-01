@@ -8,9 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Alchemy\Lib\Util;
-
-
+namespace Alchemy\Component\Annotations;
 
 /**
  * Class Annotations
@@ -31,14 +29,16 @@ class Annotations
 
     public function __construct($config = null)
     {
-        if ($config instanceof \Alchemy\Config) {
-            //\Notoj\Notoj::enableCache($config->get('app.cache_dir') . DIRECTORY_SEPARATOR . "_annotations.php");
-        }
     }
 
     public function setDefaultAnnotationNamespace($namespace)
     {
         $this->defaultNamespace = $namespace;
+    }
+
+    public function getDefaultAnnotationNamespace()
+    {
+        return $this->defaultNamespace;
     }
 
     public static function getClassAnnotations($className)
@@ -72,6 +72,8 @@ class Annotations
         $annotations = $this->getMethodAnnotations($className, $methodName);
         $objects     = array();
 
+        $i = 0;
+
         foreach ($annotations as $annotationClass => $listParams) {
             $annotationClass = ucfirst($annotationClass);
             $class = $this->defaultNamespace . $annotationClass . 'Annotation';
@@ -90,7 +92,7 @@ class Annotations
                         $objects[$annotationClass]->set($key, $value);
                     }
                 } else {
-                    $objects[$annotationClass]->set(0, $params);
+                    $objects[$annotationClass]->set($i++, $params);
                 }
             }
         }
@@ -161,6 +163,7 @@ class Annotations
                     $composing     = true;
                     $quoted        = true;
                 } else { // close delimiter
+                    //FIXME this pattern is not working: address="{country=USA, avenue='Central Park'}"
                     if ($c !== $nextDelimiter) {
                         throw new \InvalidArgumentException("Parse Error: enclosing error -> expected: [$nextDelimiter], given: [".$c."]");
                     }
