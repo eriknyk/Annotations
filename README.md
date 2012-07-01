@@ -2,7 +2,7 @@ README
 =========================
 [![Build Status](https://secure.travis-ci.org/eriknyk/Annotations.png?branch=master)](http://travis-ci.org/eriknyk/Annotations)
 
-Simple and Lightweight PHP Class & Methods reader
+Simple and Lightweight PHP Class & Methods Annotations Reader
 ===
 
 Sample class User.php
