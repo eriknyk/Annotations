@@ -137,7 +137,7 @@ class Annotation2sTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    function testComplexString()
+    public function testComplexString()
     {
         $result = $this->annotations->getMethodAnnotations('\Group', 'shouldworks');
         $expected = array(
@@ -156,3 +156,4 @@ class Annotation2sTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 }
+

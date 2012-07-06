@@ -23,7 +23,9 @@ class Group
      * @param $id string user id
      * @return bool result at build user structure process
      */
-    function build($id){}
+    public function build($id)
+    {
+    }
 
     /**
      * retrieve all users objects
@@ -34,20 +36,29 @@ class Group
      *
      * @return array $list array containing all users objects
      */
-    function getAll(){}
+    public function getAll()
+    {
+    }
 
     /**
      * @throwsError(err_var={one=1, two=2)
      */
-    function errFunc1(){}
+    public function errFunc1()
+    {
+    }
 
     /**
      * @throwsError(err_var="some val, var1="val1")
      */
-    function errFunc2(){}
+    public function errFunc2()
+    {
+    }
 
     /**
      * @sample(err_var="1 + 1 = 2, 2+2 = 4", test_var = 'log text, {0}={1} to params...', sample={a=1,b=2,c=3})
      */
-    function shouldworks(){}
+    public function shouldworks()
+    {
+    }
 }
+

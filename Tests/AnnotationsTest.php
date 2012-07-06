@@ -113,3 +113,4 @@ class AnnotationsTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Base\Annotation\RoleAnnotation', $result['Role']);
     }
 }
+

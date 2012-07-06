@@ -29,3 +29,4 @@ class Annotation
         return !empty($this->data[$key]);
     }
 }
+

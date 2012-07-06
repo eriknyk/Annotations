@@ -12,8 +12,8 @@ class User
      * @type(json)
      * @limits(start=10, limit=50)
      */
-    function load(){
-
+    public function load()
+    {
     }
 
     /**
@@ -27,3 +27,4 @@ class User
     {
     }
 }
+

@@ -116,7 +116,8 @@ class Annotations
             $numMatches = count($matches[0]);
 
             for ($i = 0; $i < $numMatches; ++$i) {
-                if (isset($matches['args'][$i])) { // annotations has arguments
+                // annotations has arguments
+                if (isset($matches['args'][$i])) {
                     $argsParts = trim($matches['args'][$i]);
                     $name      = $matches['name'][$i];
                     $value     = self::parseArgs($argsParts);
@@ -156,22 +157,28 @@ class Annotations
 
             if ($c === '\'' || $c === '"') {
                 $delimiter = $c;
-
-                if (!$composing && empty($prevDelimiter) && empty($nextDelimiter)) { //open delimiter
+                //open delimiter
+                if (!$composing && empty($prevDelimiter) && empty($nextDelimiter)) {
                     $prevDelimiter = $nextDelimiter = $delimiter;
                     $val           = '';
                     $composing     = true;
                     $quoted        = true;
-                } else { // close delimiter
-                    //FIXME this pattern is not working: address="{country=USA, avenue='Central Park'}"
+                } else {
+                    // close delimiter
                     if ($c !== $nextDelimiter) {
-                        throw new \InvalidArgumentException("Parse Error: enclosing error -> expected: [$nextDelimiter], given: [".$c."]");
+                        throw new \InvalidArgumentException(sprintf(
+                            "Parse Error: enclosing error -> expected: [%s], given: [%s]",
+                            $nextDelimiter, $c
+                        ));
                     }
 
                     // validating sintax
                     if ($i < $len) {
                         if (',' !== substr($content, $i, 1)) {
-                            throw new \InvalidArgumentException("Parse Error: missing comma separator near: ...".substr($content, ($i-10), $i)."<--");
+                            throw new \InvalidArgumentException(sprintf(
+                                "Parse Error: missing comma separator near: ...%s<--",
+                                substr($content, ($i-10), $i)
+                            ));
                         }
                     }
 
@@ -188,18 +195,20 @@ class Annotations
                         $type      = 'assoc';
                         $quoted = false;
                         break;
-
                     case ',':
                         $level = 3;
 
-                        // If composing flag is true yet, it means that the string was not enclosed, so it is parsing error.
+                        // If composing flag is true yet,
+                        // it means that the string was not enclosed, so it is parsing error.
                         if ($composing === true && !empty($prevDelimiter) && !empty($nextDelimiter)) {
-                            throw new \InvalidArgumentException("Parse Error: enclosing error -> expected: [$nextDelimiter], given: [".$c."]");
+                            throw new \InvalidArgumentException(sprintf(
+                                "Parse Error: enclosing error -> expected: [%s], given: [%s]",
+                                $nextDelimiter, $c
+                            ));
                         }
 
                         $prevDelimiter = $nextDelimiter = '';
                         break;
-
                     case '{':
                         $subc = '';
                         $subComposing = true;
@@ -208,7 +217,9 @@ class Annotations
                             $c = substr($content, $i++, 1);
 
                             if (isset($delimiter) && $c === $delimiter) {
-                                throw new \InvalidArgumentException("Parse Error: Composite variable is not enclosed correctly.");
+                                throw new \InvalidArgumentException(sprintf(
+                                    "Parse Error: Composite variable is not enclosed correctly."
+                                ));
                             }
 
                             if ($c === '}') {
@@ -220,7 +231,10 @@ class Annotations
 
                         // if the string is composing yet means that the structure of var. never was enclosed with '}'
                         if ($subComposing) {
-                            throw new \InvalidArgumentException("Parse Error: Composite variable is not enclosed correctly. near: ...".$subc."'");
+                            throw new \InvalidArgumentException(sprintf(
+                                "Parse Error: Composite variable is not enclosed correctly. near: ...%s'",
+                                $subc
+                            ));
                         }
 
                         $val = self::parseArgs($subc);
@@ -276,15 +290,4 @@ class Annotations
         return $val;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
