@@ -23,24 +23,57 @@ namespace Alchemy\Component\Annotations;
  */
 class Annotations
 {
+    /**
+     * Static array to store already parsed annotations
+     * @var array
+     */
     private static $annotationCache;
 
+    /**
+     * Indicates that annotations should has strict behavior, 'false' by default
+     * @var boolean
+     */
+    private $strict = false;
+
+    /**
+     * Stores the default namespace for Objects instance, usually used on methods like getMethodAnnotationsObjects()
+     * @var string
+     */
     public $defaultNamespace = '';
 
-    public function __construct($config = null)
+    /**
+     * Sets strict variable to true/false
+     * @param bool $value boolean value to indicate that annotations to has strict behavior
+     */
+    public function setStrict($value)
     {
+        $this->strict = (bool) $value;
     }
 
+    /**
+     * Sets default namespace to use in object instantiation
+     * @param string $namespace default namespace
+     */
     public function setDefaultAnnotationNamespace($namespace)
     {
         $this->defaultNamespace = $namespace;
     }
 
+    /**
+     * Gets default namespace used in object instantiation
+     * @return string $namespace default namespace
+     */
     public function getDefaultAnnotationNamespace()
     {
         return $this->defaultNamespace;
     }
 
+    /**
+     * Gets all anotations with pattern @SomeAnnotation() from a given class
+     *
+     * @param  string $className             class name to get annotations
+     * @return array  self::$annotationCache all annotated elements
+     */
     public static function getClassAnnotations($className)
     {
         if (!isset(self::$annotationCache[$className])) {
@@ -51,6 +84,13 @@ class Annotations
         return self::$annotationCache[$className];
     }
 
+    /**
+     * Gets all anotations with pattern @SomeAnnotation() from a determinated method of a given class
+     *
+     * @param  string $className             class name
+     * @param  string $methodName            method name to get annotations
+     * @return array  self::$annotationCache all annotated elements of a method given
+     */
     public static function getMethodAnnotations($className, $methodName)
     {
         if (!isset(self::$annotationCache[$className . '::' . $methodName])) {
@@ -67,6 +107,14 @@ class Annotations
         return self::$annotationCache[$className . '::' . $methodName];
     }
 
+    /**
+     * Gets all anotations with pattern @SomeAnnotation() from a determinated method of a given class
+     * and instance its abcAnnotation class
+     *
+     * @param  string $className             class name
+     * @param  string $methodName            method name to get annotations
+     * @return array  self::$annotationCache all annotated objects of a method given
+     */
     public function getMethodAnnotationsObjects($className, $methodName)
     {
         $annotations = $this->getMethodAnnotations($className, $methodName);
@@ -78,11 +126,18 @@ class Annotations
             $annotationClass = ucfirst($annotationClass);
             $class = $this->defaultNamespace . $annotationClass . 'Annotation';
 
-            if (empty($objects[$annotationClass])) {
-                if (!class_exists($class)) {
-                    throw new \Exception(sprintf('Annotation Class Not Found: %s', $class));
+            // verify is the annotation class exists, depending if Annotations::strict is true
+            // if not, just skip the annotation instance creation.
+            if (! class_exists($class)) {
+                if ($this->strict) {
+                    throw new \RuntimeException(sprintf('Runtime Error: Annotation Class Not Found: %s', $class));
+                } else {
+                    // silent skip & continue
+                    continue;
                 }
+            }
 
+            if (empty($objects[$annotationClass])) {
                 $objects[$annotationClass] = new $class();
             }
 
@@ -101,9 +156,10 @@ class Annotations
     }
 
     /**
+     * Parse annotations
+     *
      * @param  string $docblock
-     * @return array
-     * @since  Method available since Release 3.4.0
+     * @return array parsed annotations params
      */
     private static function parseAnnotations($docblock)
     {
@@ -133,7 +189,12 @@ class Annotations
         return $annotations;
     }
 
-
+    /**
+     * Parse individual annotation arguments
+     *
+     * @param  string $content arguments string
+     * @return array           annotated arguments
+     */
     private static function parseArgs($content)
     {
         $data  = array();
@@ -265,6 +326,13 @@ class Annotations
         return $data;
     }
 
+    /**
+     * Try determinate the original type variable of a string
+     *
+     * @param  string  $val  string containing possibles variables that can be cast to bool or int
+     * @param  boolean $trim indicate if the value passed should be trimmed after to try cast
+     * @return mixed         returns the value converted to original type if was possible
+     */
     private static function castValue($val, $trim = false)
     {
         if (is_array($val)) {

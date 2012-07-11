@@ -35,6 +35,7 @@ class AnnotationsTest extends PHPUnit_Framework_TestCase
     public function testSetDefaultAnnotationNamespace()
     {
         $this->annotations->setDefaultAnnotationNamespace('\Base\Annotation\\');
+        $this->annotations->setStrict(true);
 
         $this->assertEquals('\Base\Annotation\\', $this->annotations->getDefaultAnnotationNamespace());
 
