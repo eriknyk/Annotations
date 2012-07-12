@@ -54,7 +54,7 @@ class Annotations
      * Sets default namespace to use in object instantiation
      * @param string $namespace default namespace
      */
-    public function setDefaultAnnotationNamespace($namespace)
+    public function setDefaultNamespace($namespace)
     {
         $this->defaultNamespace = $namespace;
     }
