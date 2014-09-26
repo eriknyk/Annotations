@@ -30,11 +30,11 @@ class AnnotationsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Annotations::setDefaultAnnotationNamespace
+     * @covers Annotations::setDefaultNamespace
      */
-    public function testSetDefaultAnnotationNamespace()
+    public function testSetDefaultNamespace()
     {
-        $this->annotations->setDefaultAnnotationNamespace('\Base\Annotation\\');
+        $this->annotations->setDefaultNamespace('\Base\Annotation\\');
         $this->annotations->setStrict(true);
 
         $this->assertEquals('\Base\Annotation\\', $this->annotations->getDefaultAnnotationNamespace());
@@ -44,7 +44,7 @@ class AnnotationsTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Annotations::getClassAnnotations
-     * @depends testSetDefaultAnnotationNamespace
+     * @depends testSetDefaultNamespace
      */
     public function testGetClassAnnotations($annotations)
     {
@@ -78,7 +78,7 @@ class AnnotationsTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Annotations::getMethodAnnotations
-     * @depends testSetDefaultAnnotationNamespace
+     * @depends testSetDefaultNamespace
      */
     public function testGetMethodAnnotations($annotations)
     {
@@ -100,7 +100,7 @@ class AnnotationsTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Annotations::getMethodAnnotationsObjects
-     * @depends testSetDefaultAnnotationNamespace
+     * @depends testSetDefaultNamespace
      */
     public function testGetMethodAnnotationsObjects($annotations)
     {
