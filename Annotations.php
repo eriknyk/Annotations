@@ -27,13 +27,13 @@ class Annotations
      * Static array to store already parsed annotations
      * @var array
      */
-    private static $annotationCache;
+    protected static $annotationCache;
 
     /**
      * Indicates that annotations should has strict behavior, 'false' by default
      * @var boolean
      */
-    private $strict = false;
+    protected $strict = false;
 
     /**
      * Stores the default namespace for Objects instance, usually used on methods like getMethodAnnotationsObjects()
@@ -161,7 +161,7 @@ class Annotations
      * @param  string $docblock
      * @return array parsed annotations params
      */
-    private static function parseAnnotations($docblock)
+    protected static function parseAnnotations($docblock)
     {
         $annotations = array();
 
@@ -195,7 +195,7 @@ class Annotations
      * @param  string $content arguments string
      * @return array           annotated arguments
      */
-    private static function parseArgs($content)
+    protected static function parseArgs($content)
     {
         $data  = array();
         $len   = strlen($content);
@@ -333,7 +333,7 @@ class Annotations
      * @param  boolean $trim indicate if the value passed should be trimmed after to try cast
      * @return mixed         returns the value converted to original type if was possible
      */
-    private static function castValue($val, $trim = false)
+    protected static function castValue($val, $trim = false)
     {
         if (is_array($val)) {
             foreach ($val as $key => $value) {

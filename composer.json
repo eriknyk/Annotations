@@ -1,0 +1,18 @@
+{
+    "name": "eriknyk/Annotations",
+    "type": "library",
+    "description": "Simple and Lightweight PHP Class & Methods Annotations Reader",
+    "keywords": [],
+    "homepage": "https://github.com/eriknyk/Annotations",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Erik Amaru Ortiz",
+            "email": "aortiz.erik@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Alchemy\\Component\\Annotations\\": "" }
+    },
+    "target-dir": "Alchemy/Component/Annotations"
+}
